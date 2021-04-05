@@ -1,17 +1,17 @@
 package handler
 
 import (
-	"log"
 	"reminder-bot/internal/service"
 
-	botapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/sirupsen/logrus"
 )
 
 type Handler struct {
-	bot          *botapi.BotAPI
-	mainKeyboard *botapi.ReplyKeyboardMarkup
-	updatesChan  *botapi.UpdatesChannel
-	curUpdate    *botapi.Update
+	bot          *tgbotapi.BotAPI
+	mainKeyboard *tgbotapi.ReplyKeyboardMarkup
+	updatesChan  *tgbotapi.UpdatesChannel
+	curUpdate    *tgbotapi.Update
 	curChatID    int64
 	service      *service.Service
 }
@@ -20,7 +20,7 @@ func NewHandler(service *service.Service) *Handler {
 	return &Handler{service: service}
 }
 
-func (h *Handler) InitRoutes(bot *botapi.BotAPI, mainKeyboard *botapi.ReplyKeyboardMarkup, updatesChan *botapi.UpdatesChannel) *Handler {
+func (h *Handler) InitRoutes(bot *tgbotapi.BotAPI, mainKeyboard *tgbotapi.ReplyKeyboardMarkup, updatesChan *tgbotapi.UpdatesChannel) *Handler {
 	handler := new(Handler)
 	handler.updatesChan = updatesChan
 	handler.bot = bot
@@ -28,14 +28,14 @@ func (h *Handler) InitRoutes(bot *botapi.BotAPI, mainKeyboard *botapi.ReplyKeybo
 	return handler
 }
 
-func (h *Handler) Handle(update *botapi.Update) {
+func (h *Handler) Handle(update *tgbotapi.Update) {
 	h.curUpdate = update
 	h.curChatID = update.Message.Chat.ID
 
 	switch update.Message.Text {
 	case "/start":
-		log.Println("Bot is started...")
-		msg := botapi.NewMessage(update.Message.Chat.ID, `
+		logrus.Println("Bot is started...")
+		msg := tgbotapi.NewMessage(update.Message.Chat.ID, `
 			<b>Привет юзер :)</b>
 			Используй меня, чтобы создавать для себя напоминания о самых важных вещах).`)
 		msg.ParseMode = "HTML"
@@ -56,5 +56,5 @@ func (h *Handler) Handle(update *botapi.Update) {
 	}
 }
 func (h *Handler) SendMsg(message string) {
-	h.bot.Send(botapi.NewMessage(h.curUpdate.Message.Chat.ID, message))
+	h.bot.Send(tgbotapi.NewMessage(h.curUpdate.Message.Chat.ID, message))
 }

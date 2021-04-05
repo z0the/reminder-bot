@@ -1,25 +1,25 @@
 package keyboard
 
-import botapi "github.com/go-telegram-bot-api/telegram-bot-api"
+import tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 
 var (
-	mainKeyBoard *botapi.ReplyKeyboardMarkup = nil
+	mainKeyBoard *tgbotapi.ReplyKeyboardMarkup = nil
 )
 
-func GetMainKeyboard() *botapi.ReplyKeyboardMarkup {
+func GetMainKeyboard() *tgbotapi.ReplyKeyboardMarkup {
 	if mainKeyBoard == nil {
-		row1 := []botapi.KeyboardButton{
-			botapi.NewKeyboardButton("Создать напоминание"),
+		row1 := []tgbotapi.KeyboardButton{
+			tgbotapi.NewKeyboardButton("Создать напоминание"),
 		}
-		row2 := []botapi.KeyboardButton{
-			botapi.NewKeyboardButton("Посмотреть список моих напоминаний"),
+		row2 := []tgbotapi.KeyboardButton{
+			tgbotapi.NewKeyboardButton("Посмотреть список моих напоминаний"),
 		}
-		row3 := []botapi.KeyboardButton{
-			botapi.NewKeyboardButton("1"),
-			botapi.NewKeyboardButton("2"),
-			botapi.NewKeyboardButton("3"),
+		row3 := []tgbotapi.KeyboardButton{
+			tgbotapi.NewKeyboardButton("1"),
+			tgbotapi.NewKeyboardButton("2"),
+			tgbotapi.NewKeyboardButton("3"),
 		}
-		keyboard := botapi.NewReplyKeyboard(row1, row2, row3)
+		keyboard := tgbotapi.NewReplyKeyboard(row1, row2, row3)
 		mainKeyBoard = &keyboard
 	}
 	return mainKeyBoard

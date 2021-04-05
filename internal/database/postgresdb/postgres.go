@@ -1,9 +1,9 @@
-package model
+package postgresdb
 
 import (
 	"fmt"
-	"log"
 
+	"github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -22,7 +22,8 @@ func NewPostgresDB(cfg Config) *gorm.DB {
 	// dsn := "host=localhost user=postgres password=p@ssw0rd dbname=gorm port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Error on connection to db, err: ", err)
+		logrus.Fatal("Error on connection to db, err: ", err)
 	}
+	logrus.Info("Successful database connection!")
 	return db
 }

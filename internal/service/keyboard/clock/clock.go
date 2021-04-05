@@ -3,34 +3,34 @@ package clock
 import (
 	"strconv"
 
-	botapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
-func GenerateClockKeyboard(hour10, hour1, minute10, minute1 int) botapi.InlineKeyboardMarkup {
-	row1 := []botapi.InlineKeyboardButton{
-		botapi.NewInlineKeyboardButtonData("+", "+hour10"),
-		botapi.NewInlineKeyboardButtonData("+", "+hour1"),
-		botapi.NewInlineKeyboardButtonData(" ", "0"),
-		botapi.NewInlineKeyboardButtonData("+", "+minute10"),
-		botapi.NewInlineKeyboardButtonData("+", "+minute1"),
+func GenerateClockKeyboard(hour10, hour1, minute10, minute1 int) tgbotapi.InlineKeyboardMarkup {
+	row1 := []tgbotapi.InlineKeyboardButton{
+		tgbotapi.NewInlineKeyboardButtonData("+", "+hour10"),
+		tgbotapi.NewInlineKeyboardButtonData("+", "+hour1"),
+		tgbotapi.NewInlineKeyboardButtonData(" ", "0"),
+		tgbotapi.NewInlineKeyboardButtonData("+", "+minute10"),
+		tgbotapi.NewInlineKeyboardButtonData("+", "+minute1"),
 	}
-	row2 := []botapi.InlineKeyboardButton{
-		botapi.NewInlineKeyboardButtonData(strconv.Itoa(hour10), "0"),
-		botapi.NewInlineKeyboardButtonData(strconv.Itoa(hour1), "0"),
-		botapi.NewInlineKeyboardButtonData(":", "0"),
-		botapi.NewInlineKeyboardButtonData(strconv.Itoa(minute10), "0"),
-		botapi.NewInlineKeyboardButtonData(strconv.Itoa(minute1), "0"),
+	row2 := []tgbotapi.InlineKeyboardButton{
+		tgbotapi.NewInlineKeyboardButtonData(strconv.Itoa(hour10), "0"),
+		tgbotapi.NewInlineKeyboardButtonData(strconv.Itoa(hour1), "0"),
+		tgbotapi.NewInlineKeyboardButtonData(":", "0"),
+		tgbotapi.NewInlineKeyboardButtonData(strconv.Itoa(minute10), "0"),
+		tgbotapi.NewInlineKeyboardButtonData(strconv.Itoa(minute1), "0"),
 	}
-	row3 := []botapi.InlineKeyboardButton{
-		botapi.NewInlineKeyboardButtonData("-", "-hour10"),
-		botapi.NewInlineKeyboardButtonData("-", "-hour1"),
-		botapi.NewInlineKeyboardButtonData(" ", "0"),
-		botapi.NewInlineKeyboardButtonData("-", "-minute10"),
-		botapi.NewInlineKeyboardButtonData("-", "-minute1"),
+	row3 := []tgbotapi.InlineKeyboardButton{
+		tgbotapi.NewInlineKeyboardButtonData("-", "-hour10"),
+		tgbotapi.NewInlineKeyboardButtonData("-", "-hour1"),
+		tgbotapi.NewInlineKeyboardButtonData(" ", "0"),
+		tgbotapi.NewInlineKeyboardButtonData("-", "-minute10"),
+		tgbotapi.NewInlineKeyboardButtonData("-", "-minute1"),
 	}
-	return botapi.NewInlineKeyboardMarkup(row1, row2, row3)
+	return tgbotapi.NewInlineKeyboardMarkup(row1, row2, row3)
 }
-func PlusHandler(data string, clock map[string]int) (botapi.InlineKeyboardMarkup, map[string]int) {
+func PlusHandler(data string, clock map[string]int) (tgbotapi.InlineKeyboardMarkup, map[string]int) {
 	switch data {
 	case "+hour10":
 		if clock["hour10"] < 2 {
@@ -70,7 +70,7 @@ func PlusHandler(data string, clock map[string]int) (botapi.InlineKeyboardMarkup
 	}
 	return GenerateClockKeyboard(clock["hour10"], clock["hour1"], clock["minute10"], clock["minute1"]), clock
 }
-func MinusHandler(data string, clock map[string]int) (botapi.InlineKeyboardMarkup, map[string]int) {
+func MinusHandler(data string, clock map[string]int) (tgbotapi.InlineKeyboardMarkup, map[string]int) {
 	switch data {
 	case "-hour10":
 		if clock["hour10"] == 0 {
