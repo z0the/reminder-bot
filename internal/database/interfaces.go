@@ -9,9 +9,3 @@ type BotDataBase interface {
 	GetRemindByID(id int) error
 	GetAllRemindes() error
 }
-
-// func NewModel(db *gorm.DB) *Model {
-// 	return &Model{
-// 		RemindCreator: NewCreatePostgres(db),
-// 	}
-// }
