@@ -24,3 +24,15 @@ func GetMainKeyboard() *tgbotapi.ReplyKeyboardMarkup {
 	}
 	return mainKeyBoard
 }
+func GetCancelNextKeyboard() *tgbotapi.ReplyKeyboardMarkup {
+	keyboard := tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{tgbotapi.NewKeyboardButton("Отмена"), tgbotapi.NewKeyboardButton("Далее")})
+	return &keyboard
+}
+func GetSettingTimeOffsetKeyboard() *tgbotapi.InlineKeyboardMarkup {
+	row1 := []tgbotapi.InlineKeyboardButton{
+		tgbotapi.NewInlineKeyboardButtonData("+1", "+"),
+		tgbotapi.NewInlineKeyboardButtonData("-1", "-"),
+	}
+	keyboard := tgbotapi.NewInlineKeyboardMarkup(row1)
+	return &keyboard
+}

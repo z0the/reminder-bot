@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"reminder-bot/internal/database/postgresdb"
+	"reminder-bot/internal/models"
 	"reminder-bot/internal/telegram"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
@@ -24,15 +25,16 @@ func init() {
 	}
 }
 func main() {
-	db := postgresdb.NewPostgresDB(postgresdb.Config{
-		Host:     viper.GetString("db.host"),
-		Port:     viper.GetString("db.port"),
-		Username: viper.GetString("db.username"),
-		DBName:   viper.GetString("db.dbname"),
-		SSLMode:  viper.GetString("db.sslmode"),
+	db := postgresdb.NewPostgresDB(postgresdb.StartConfig{
+		Host:     viper.GetString("dbCon.host"),
+		Port:     viper.GetString("dbCon.port"),
+		Username: viper.GetString("dbCon.username"),
+		DBName:   viper.GetString("dbCon.dbname"),
+		SSLMode:  viper.GetString("dbCon.sslmode"),
 		Password: os.Getenv("DB_PASSWORD"),
 	})
-	db.AutoMigrate(&postgresdb.Remind{})
+	db.AutoMigrate(&models.Remind{})
+	db.AutoMigrate(&models.User{})
 	botDB := postgresdb.NewBotDataBase(db)
 	token := os.Getenv("BOT_TOKEN")
 	bot, err := tgbotapi.NewBotAPI(token)
@@ -40,7 +42,7 @@ func main() {
 		logrus.Fatal(err)
 	}
 	bot.Debug = false
-	telegramBot := telegram.NewBot(bot, botDB)
+	telegramBot := telegram.NewBot(bot, botDB, os.Getenv("AIzaSyDH-LutBNEWdECsnCgTKoNRdbRTXdfBCw0"))
 	telegramBot.Start()
 }
 

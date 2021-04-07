@@ -5,7 +5,12 @@ import (
 )
 
 type BotDataBase interface {
-	CreateRemind(remind models.Remind) error
-	GetRemindByID(id int) error
-	GetAllRemindes() error
+	CreateRemind(remind models.Remind) (models.Remind, error)
+	GetLastRemindIDByChatID(id int64) (int, error)
+	GetAllRemindes() ([]models.Remind, error)
+	UpdateRemind(remind models.Remind, key string, value interface{}) error
+
+	CreateUser(user models.User) error
+	GetAllUsers() ([]models.User, error)
+	GetUserByChatID(id int64) (models.User, error)
 }

@@ -2,13 +2,17 @@ package postgresdb
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-type Config struct {
+type StartConfig struct {
 	Host     string
 	Port     string
 	Username string
@@ -17,10 +21,20 @@ type Config struct {
 	SSLMode  string
 }
 
-func NewPostgresDB(cfg Config) *gorm.DB {
+func NewPostgresDB(cfg StartConfig) *gorm.DB {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Host, cfg.Username, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
-	// dsn := "host=localhost user=postgres password=p@ssw0rd dbname=gorm port=5432 sslmode=disable"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold: time.Second,   // Slow SQL threshold
+			LogLevel:      logger.Silent, // Log level
+			Colorful:      true,          // Disable color
+		},
+	)
+	DBConfig := &gorm.Config{
+		Logger: newLogger,
+	}
+	db, err := gorm.Open(postgres.Open(dsn), DBConfig)
 	if err != nil {
 		logrus.Fatal("Error on connection to db, err: ", err)
 	}

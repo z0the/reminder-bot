@@ -1,6 +1,7 @@
-db:
+dbCon:
     host: "localhost"
     port: "5432"
     username: "postgres"
     dbname: "botdb"
     sslmode: "disable"
+db:
