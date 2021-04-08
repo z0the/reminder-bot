@@ -18,7 +18,7 @@ func init() {
 	logrus.Info("Initializing App...")
 	err := godotenv.Load()
 	if err != nil {
-		logrus.Fatal("Error loading .env file")
+		logrus.Warn("Error loading .env file")
 	}
 	err = initConfig()
 	if err != nil {
