@@ -21,8 +21,13 @@ type StartConfig struct {
 	SSLMode  string
 }
 
-func NewPostgresDB(cfg StartConfig) *gorm.DB {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Host, cfg.Username, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
+func NewPostgresDB(cfg StartConfig, dev bool) *gorm.DB {
+	var dsn string
+	if dev {
+		dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Host, cfg.Username, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
+	} else {
+		dsn = fmt.Sprintf("host=db user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Username, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
+	}
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{

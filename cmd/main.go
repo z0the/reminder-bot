@@ -5,6 +5,7 @@ import (
 	"reminder-bot/internal/database/postgresdb"
 	"reminder-bot/internal/models"
 	"reminder-bot/internal/telegram"
+	"strconv"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/joho/godotenv"
@@ -25,6 +26,10 @@ func init() {
 	}
 }
 func main() {
+	dev, err := strconv.ParseBool(os.Getenv("DEV"))
+	if err != nil {
+		logrus.Fatal(err)
+	}
 	db := postgresdb.NewPostgresDB(postgresdb.StartConfig{
 		Host:     viper.GetString("dbCon.host"),
 		Port:     viper.GetString("dbCon.port"),
@@ -32,7 +37,7 @@ func main() {
 		DBName:   viper.GetString("dbCon.dbname"),
 		SSLMode:  viper.GetString("dbCon.sslmode"),
 		Password: os.Getenv("DB_PASSWORD"),
-	})
+	}, dev)
 	db.AutoMigrate(&models.Remind{})
 	db.AutoMigrate(&models.User{})
 	botDB := postgresdb.NewBotDataBase(db)

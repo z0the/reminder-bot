@@ -53,8 +53,9 @@ jobs:
                       # Set env variables
                       export BOT_TOKEN=${{ secrets.BOT_TOKEN }}
                       export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+                      export DEV=${{ secrets.DEV }}
                       # Run a new container from a new image
-                      docker run -e BOT_TOKEN -e DB_PASSWORD -d \
+                      docker run -e BOT_TOKEN -e DB_PASSWORD -e DEV -d \
                       --network defNet \
                       --restart always \
                       --publish 80:80 \
