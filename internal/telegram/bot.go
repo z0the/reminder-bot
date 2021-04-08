@@ -11,18 +11,16 @@ import (
 )
 
 type Bot struct {
-	bot          *tgbotapi.BotAPI
-	db           database.BotDataBase
-	googleApiKey string
-	curChatID    int64
-	updatesChan  tgbotapi.UpdatesChannel
+	bot         *tgbotapi.BotAPI
+	db          database.BotDataBase
+	curChatID   int64
+	updatesChan tgbotapi.UpdatesChannel
 }
 
-func NewBot(bot *tgbotapi.BotAPI, db database.BotDataBase, googleApiKey string) *Bot {
+func NewBot(bot *tgbotapi.BotAPI, db database.BotDataBase) *Bot {
 	return &Bot{
-		bot:          bot,
-		db:           db,
-		googleApiKey: googleApiKey,
+		bot: bot,
+		db:  db,
 	}
 }
 func (t *Bot) Start() {

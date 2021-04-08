@@ -42,7 +42,7 @@ func main() {
 		logrus.Fatal(err)
 	}
 	bot.Debug = false
-	telegramBot := telegram.NewBot(bot, botDB, os.Getenv("AIzaSyDH-LutBNEWdECsnCgTKoNRdbRTXdfBCw0"))
+	telegramBot := telegram.NewBot(bot, botDB)
 	telegramBot.Start()
 }
 

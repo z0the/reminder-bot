@@ -52,8 +52,10 @@ jobs:
                       docker rm $(echo $CONTAINER_NAME)
                       # Set env variables
                       export BOT_TOKEN=${{ secrets.BOT_TOKEN }}
+                      export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
                       # Run a new container from a new image
-                      docker run -e BOT_TOKEN -d \
+                      docker run -e BOT_TOKEN -e DB_PASSWORD -d \
+                      --network defNet \
                       --restart always \
                       --publish 80:80 \
                       --name $(echo $CONTAINER_NAME) \
