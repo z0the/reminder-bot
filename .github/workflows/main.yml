@@ -44,8 +44,8 @@ jobs:
                   key: ${{ secrets.SSH_KEY }}
                   envs: IMAGE_NAME,REGISTRY,GITHUB_SHA,CONTAINER_NAME
                   script: |
-                      # Login into Digital Ocean Registry
-                      docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} $(echo $REGISTRY)
+                      # Login into Docker hub
+                      docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
                       # Stop running container
                       docker stop $(echo $CONTAINER_NAME)
                       # Remove old container
