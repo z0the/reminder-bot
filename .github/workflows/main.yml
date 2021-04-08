@@ -6,8 +6,8 @@ on:
             - master
 
 env:
-    REGISTRY: "zothe/telegram-bot"
-    IMAGE_NAME: "zothe/telegram-bot"
+    REGISTRY: "zothe"
+    IMAGE_NAME: "telegram-bot"
     CONTAINER_NAME: "tg-bot"
 
 jobs:
