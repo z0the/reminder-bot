@@ -21,13 +21,24 @@ type StartConfig struct {
 	SSLMode  string
 }
 
-func NewPostgresDB(cfg StartConfig, dev bool) *gorm.DB {
+func NewPostgresDB(cfg StartConfig, devEnv bool) *gorm.DB {
 	var dsn string
-	if dev {
+	if devEnv {
 		dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Host, cfg.Username, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
 	} else {
 		dsn = fmt.Sprintf("host=db user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Username, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
 	}
+
+	DBConfig := SetupDBConfig()
+	db, err := gorm.Open(postgres.Open(dsn), DBConfig)
+	if err != nil {
+		logrus.Fatal("Error on connection to db, err: ", err)
+	}
+	logrus.Info("Successful database connection!")
+	return db
+}
+
+func SetupDBConfig() *gorm.Config {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
@@ -36,13 +47,7 @@ func NewPostgresDB(cfg StartConfig, dev bool) *gorm.DB {
 			Colorful:      true,          // Disable color
 		},
 	)
-	DBConfig := &gorm.Config{
+	return &gorm.Config{
 		Logger: newLogger,
 	}
-	db, err := gorm.Open(postgres.Open(dsn), DBConfig)
-	if err != nil {
-		logrus.Fatal("Error on connection to db, err: ", err)
-	}
-	logrus.Info("Successful database connection!")
-	return db
 }

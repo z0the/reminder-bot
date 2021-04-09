@@ -17,9 +17,6 @@ func (t *Bot) checkRemindes() {
 			logrus.Warn(err)
 		}
 		for _, remind := range reminds {
-			// logrus.Info("Time until :", remind.ActivationTime.Sub(time.Now().UTC()))
-			// logrus.Info("Time now(UTC) :", time.Now().UTC())
-			// logrus.Info("Time activation :", remind.ActivationTime)
 			if time.Until(remind.ActivationTime) < time.Hour &&
 				!remind.AlreadyServed && !remind.ServingNow {
 				go t.serveRemind(remind)

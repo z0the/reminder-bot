@@ -1,10 +1,7 @@
 package telegram
 
 import (
-	"os"
-	"os/signal"
 	"reminder-bot/internal/database"
-	"syscall"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/sirupsen/logrus"
@@ -28,18 +25,19 @@ func (t *Bot) Start() {
 
 	go t.checkRemindes()
 
-	updates, err := t.initUpdatesChan()
+	var err error
+	t.updatesChan, err = t.initUpdatesChan()
 	if err != nil {
-		logrus.Warn("Get updates error: ", err)
+		logrus.Warn(err)
 	}
-	t.updatesChan = updates
 	go t.rootHandler()
 
-	termChan := make(chan os.Signal, 1)
-	signal.Notify(termChan, syscall.SIGINT, syscall.SIGTERM)
+	// Ctrl + C signal listen
+	// termChan := make(chan os.Signal, 1)
+	// signal.Notify(termChan, syscall.SIGINT, syscall.SIGTERM)
 
-	<-termChan
-	logrus.Warn("***********Shutdown signal received***********")
+	// <-termChan
+	// logrus.Warn("***********Shutdown signal received***********")
 
 	defer t.stopRemindsServing()
 }
@@ -71,6 +69,7 @@ func (t *Bot) initUpdatesChan() (tgbotapi.UpdatesChannel, error) {
 	}
 	return updates, nil
 }
+
 func (t *Bot) stopRemindsServing() {
 	reminds, err := t.db.GetAllRemindes()
 	if err != nil {

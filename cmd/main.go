@@ -18,17 +18,17 @@ func init() {
 	logrus.Info("Initializing App...")
 	err := godotenv.Load()
 	if err != nil {
-		logrus.Warn("Error loading .env file")
+		logrus.Warn(err)
 	}
 	err = initConfig()
 	if err != nil {
-		logrus.Fatal("Error loading configs file")
+		logrus.Fatal(err)
 	}
 }
 func main() {
-	dev, err := strconv.ParseBool(os.Getenv("DEV"))
+	devEnv, err := strconv.ParseBool(os.Getenv("DEV"))
 	if err != nil {
-		logrus.Fatal(err)
+		logrus.Fatal("Error loading DEV env, err: ", err)
 	}
 	db := postgresdb.NewPostgresDB(postgresdb.StartConfig{
 		Host:     viper.GetString("dbCon.host"),
@@ -37,7 +37,8 @@ func main() {
 		DBName:   viper.GetString("dbCon.dbname"),
 		SSLMode:  viper.GetString("dbCon.sslmode"),
 		Password: os.Getenv("DB_PASSWORD"),
-	}, dev)
+	}, devEnv)
+
 	db.AutoMigrate(&models.Remind{})
 	db.AutoMigrate(&models.User{})
 	botDB := postgresdb.NewBotDataBase(db)
