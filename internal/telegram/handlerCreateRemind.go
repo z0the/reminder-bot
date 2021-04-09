@@ -152,18 +152,31 @@ func (t *Bot) processMessage(update *tgbotapi.Update) error {
 			return err
 		}
 		remind.ActivationTime = remind.ActivationTime.Add(-time.Duration(user.TimeZoneOffset) * time.Hour)
+		if time.Until(remind.ActivationTime) < 0 {
+			msg := tgbotapi.NewMessage(curChatID, "Нельзя создавать напоминание на прошедшую дату")
+			msg.ReplyMarkup = keyboard.GetMainKeyboard()
+			_, err = t.bot.Send(msg)
+			return err
+		}
 		msg1 := tgbotapi.NewMessage(curChatID, fmt.Sprintf(`Ваше напоминание:
 
 				%s
 
 				%s в %s`, remind.Text, remind.ActivationTime.Format("2006.01.02"), remind.ActivationTime.Format("15:04")))
-		t.bot.Send(msg1)
-		t.bot.Send(tgbotapi.NewMessage(curChatID, "Если всё верно - нажмите Далее"))
+		_, err = t.bot.Send(msg1)
+		if err != nil {
+			return err
+		}
+		_, err = t.bot.Send(tgbotapi.NewMessage(curChatID, "Если всё верно - нажмите Далее"))
+		if err != nil {
+			return err
+		}
 	case 3:
 		remindRes, err := t.db.CreateRemind(*remind)
 		if err != nil {
 			return err
 		}
+
 		if time.Until(remind.ActivationTime) < time.Hour {
 			go t.serveRemind(remindRes)
 		}
