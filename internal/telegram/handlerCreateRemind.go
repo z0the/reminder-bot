@@ -24,7 +24,6 @@ var (
 )
 
 func (t *Bot) handleCreateRemind(message *tgbotapi.Message) error {
-	t.bot.Send(tgbotapi.NewMessage(curChatID, "О чём вам напомнить"))
 	curClock["hour10"] = 1
 	curClock["hour1"] = 2
 	curClock["minute10"] = 0
@@ -32,6 +31,10 @@ func (t *Bot) handleCreateRemind(message *tgbotapi.Message) error {
 	curChatID = t.curChatID
 	curYear = time.Now().Year()
 	curMonth = time.Now().Month()
+	_, err := t.bot.Send(tgbotapi.NewMessage(curChatID, "О чём вам напомнить"))
+	if err != nil {
+		return err
+	}
 	for update := range t.updatesChan {
 		if update.CallbackQuery != nil {
 			err := handleInlineQueryCreating(t.bot, &update)
@@ -48,7 +51,10 @@ func (t *Bot) handleCreateRemind(message *tgbotapi.Message) error {
 			} else if update.Message.Text == "Далее" {
 				stepCount++
 			}
-			return t.processMessage(&update)
+			err := t.processMessage(&update)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
