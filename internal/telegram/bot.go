@@ -1,7 +1,10 @@
 package telegram
 
 import (
+	"os"
+	"os/signal"
 	"reminder-bot/internal/database"
+	"syscall"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/sirupsen/logrus"
@@ -33,11 +36,11 @@ func (t *Bot) Start() {
 	go t.rootHandler()
 
 	// Ctrl + C signal listen
-	// termChan := make(chan os.Signal, 1)
-	// signal.Notify(termChan, syscall.SIGINT, syscall.SIGTERM)
+	termChan := make(chan os.Signal, 1)
+	signal.Notify(termChan, syscall.SIGINT, syscall.SIGTERM)
 
-	// <-termChan
-	// logrus.Warn("***********Shutdown signal received***********")
+	<-termChan
+	logrus.Warn("***********Shutdown signal received***********")
 
 	defer t.stopRemindsServing()
 }
