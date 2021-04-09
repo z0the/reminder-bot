@@ -9,6 +9,7 @@ type BotDataBase interface {
 	CreateRemind(remind models.Remind) (models.Remind, error)
 	GetLastRemindIDByChatID(id int64) (int, error)
 	GetAllRemindes() ([]models.Remind, error)
+	GetAllRemindesByChatID(id int64) ([]models.Remind, error)
 	UpdateRemind(remind models.Remind, key string, value interface{}) error
 
 	// Users logic

@@ -33,6 +33,11 @@ func (p *DataBase) GetAllRemindes() ([]models.Remind, error) {
 	queryResult := p.db.Find(&reminds)
 	return reminds, queryResult.Error
 }
+func (p *DataBase) GetAllRemindesByChatID(id int64) ([]models.Remind, error) {
+	reminds := make([]models.Remind, 10)
+	queryResult := p.db.Find(&reminds, "chat_id=?", id)
+	return reminds, queryResult.Error
+}
 func (p *DataBase) UpdateRemind(remind models.Remind, key string, value interface{}) error {
 	logrus.Infof("Updating remind key: %s, value: %s", key, value)
 	queryResult := p.db.Model(&remind).Update(key, value)

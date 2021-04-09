@@ -33,3 +33,10 @@ func GetSettingTimeOffsetKeyboard() *tgbotapi.InlineKeyboardMarkup {
 	keyboard := tgbotapi.NewInlineKeyboardMarkup(row1)
 	return &keyboard
 }
+func GetDeleteKeyboard() *tgbotapi.InlineKeyboardMarkup {
+	row1 := []tgbotapi.InlineKeyboardButton{
+		tgbotapi.NewInlineKeyboardButtonData("Удалить", "-"),
+	}
+	keyboard := tgbotapi.NewInlineKeyboardMarkup(row1)
+	return &keyboard
+}

@@ -6,6 +6,7 @@ import (
 	"reminder-bot/internal/service/keyboard"
 	"reminder-bot/internal/service/keyboard/calendar"
 	"reminder-bot/internal/service/keyboard/clock"
+	"reminder-bot/internal/service/text"
 	"strings"
 	"time"
 
@@ -158,11 +159,7 @@ func (t *Bot) processMessage(update *tgbotapi.Update) error {
 			_, err = t.bot.Send(msg)
 			return err
 		}
-		msg1 := tgbotapi.NewMessage(curChatID, fmt.Sprintf(`Ваше напоминание:
-
-				%s
-
-				%s в %s`, remind.Text, remind.ActivationTime.Format("2006.01.02"), remind.ActivationTime.Format("15:04")))
+		msg1 := tgbotapi.NewMessage(curChatID, text.RemindMessageText(remind))
 		_, err = t.bot.Send(msg1)
 		if err != nil {
 			return err

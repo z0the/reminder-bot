@@ -25,6 +25,8 @@ func (t *Bot) handleMessage(message *tgbotapi.Message) error {
 	switch message.Text {
 	case "Создать напоминание":
 		return t.handleCreateRemind(message)
+	case "Посмотреть список моих напоминаний":
+		return t.handlerListReminds(message)
 	default:
 		return t.handleUnknownCmd(message)
 	}
