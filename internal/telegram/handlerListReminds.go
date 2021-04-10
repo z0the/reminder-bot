@@ -17,5 +17,20 @@ func (t *Bot) handlerListReminds(message *tgbotapi.Message) error {
 		msg.ReplyMarkup = keyboard.GetDeleteKeyboard()
 		t.bot.Send(msg)
 	}
+	for update := range t.updatesChan {
+		if update.CallbackQuery != nil {
+			err := handleDeleteQuery(t.bot, &update)
+			if err != nil {
+				return err
+			}
+		}
+		if update.Message != nil {
+
+		}
+	}
+	return nil
+}
+
+func handleDeleteQuery(bot *tgbotapi.BotAPI, update *tgbotapi.Update) error {
 	return nil
 }

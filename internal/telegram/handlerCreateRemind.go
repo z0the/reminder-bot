@@ -56,6 +56,9 @@ func (t *Bot) handleCreateRemind(message *tgbotapi.Message) error {
 			if err != nil {
 				return err
 			}
+			if stepCount == 3 {
+				return nil
+			}
 		}
 	}
 	return nil
