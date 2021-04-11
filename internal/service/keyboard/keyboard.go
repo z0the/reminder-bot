@@ -1,6 +1,10 @@
 package keyboard
 
-import tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+import (
+	"fmt"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+)
 
 func GetMainKeyboard() *tgbotapi.ReplyKeyboardMarkup {
 	row1 := []tgbotapi.KeyboardButton{
@@ -33,10 +37,15 @@ func GetSettingTimeOffsetKeyboard() *tgbotapi.InlineKeyboardMarkup {
 	keyboard := tgbotapi.NewInlineKeyboardMarkup(row1)
 	return &keyboard
 }
-func GetDeleteKeyboard() *tgbotapi.InlineKeyboardMarkup {
+func GetDeleteKeyboard(id uint) *tgbotapi.InlineKeyboardMarkup {
 	row1 := []tgbotapi.InlineKeyboardButton{
-		tgbotapi.NewInlineKeyboardButtonData("Удалить", "-"),
+		tgbotapi.NewInlineKeyboardButtonData("Удалить", fmt.Sprint(id)),
 	}
 	keyboard := tgbotapi.NewInlineKeyboardMarkup(row1)
+	return &keyboard
+}
+
+func GetStopListViewKeyboard() *tgbotapi.ReplyKeyboardMarkup {
+	keyboard := tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{tgbotapi.NewKeyboardButton("Прекратить просмотр")})
 	return &keyboard
 }

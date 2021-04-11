@@ -7,6 +7,7 @@ import (
 type BotDataBase interface {
 	// Reminds logic
 	CreateRemind(remind models.Remind) (models.Remind, error)
+	DeleteRemind(id int) error
 	GetLastRemindIDByChatID(id int64) (int, error)
 	GetAllRemindes() ([]models.Remind, error)
 	GetAllRemindesByChatID(id int64) ([]models.Remind, error)

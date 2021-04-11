@@ -6,9 +6,9 @@ import (
 )
 
 func RemindMessageText(remind *models.Remind) string {
-	return fmt.Sprintf(`Ваше напоминание:
+	return fmt.Sprintf(`Ваше напоминание №%d:
 
 				%s
 
-				%s в %s`, remind.Text, remind.ActivationTime.Format("2006.01.02"), remind.ActivationTime.Format("15:04"))
+				%s в %s`, remind.IDForChat, remind.Text, remind.ActivationTime.Format("2006.01.02"), remind.ActivationTime.Format("15:04"))
 }

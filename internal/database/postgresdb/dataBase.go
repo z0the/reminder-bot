@@ -18,6 +18,11 @@ func (p *DataBase) CreateRemind(remind models.Remind) (models.Remind, error) {
 	result := p.db.Create(&remind)
 	return remind, result.Error
 }
+func (p *DataBase) DeleteRemind(id int) error {
+	var remind models.Remind
+	result := p.db.Delete(&remind, id)
+	return result.Error
+}
 func (p *DataBase) GetLastRemindIDByChatID(id int64) (int, error) {
 	var remind models.Remind
 	queryResult := p.db.Where("chat_id=?", id).Last(&remind)

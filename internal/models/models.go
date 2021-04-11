@@ -2,12 +2,12 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Remind struct {
-	gorm.Model
+	ID             uint `gorm:"primarykey"`
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
 	Text           string
 	ActivationTime time.Time
 	ChatID         int64
@@ -16,9 +16,11 @@ type Remind struct {
 	AlreadyServed  bool
 }
 
-type User struct{
-	gorm.Model
-	Name string
-	ChatID int64
+type User struct {
+	ID             uint `gorm:"primarykey"`
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	Name           string
+	ChatID         int64
 	TimeZoneOffset int
 }

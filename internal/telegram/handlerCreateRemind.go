@@ -32,7 +32,9 @@ func (t *Bot) handleCreateRemind(message *tgbotapi.Message) error {
 	curChatID = t.curChatID
 	curYear = time.Now().Year()
 	curMonth = time.Now().Month()
-	_, err := t.bot.Send(tgbotapi.NewMessage(curChatID, "О чём вам напомнить"))
+	startMsg := tgbotapi.NewMessage(curChatID, "О чём вам напомнить")
+	startMsg.ReplyMarkup = keyboard.GetCancelNextKeyboard()
+	_, err := t.bot.Send(startMsg)
 	if err != nil {
 		return err
 	}
