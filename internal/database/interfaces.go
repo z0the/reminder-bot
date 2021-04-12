@@ -17,4 +17,6 @@ type BotDataBase interface {
 	CreateUser(user models.User) error
 	GetAllUsers() ([]models.User, error)
 	GetUserByChatID(id int64) (models.User, error)
+	UpdateUser(user models.User) error
+	UpdateUserBool(user models.User, key string, value bool) error
 }

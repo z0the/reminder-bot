@@ -40,6 +40,7 @@ func (t *Bot) serveRemind(remind models.Remind) {
 	%s
 	`, remind.Text)
 	t.bot.Send(msg)
+	
 	remind.ServingNow = false
 	remind.AlreadyServed = true
 	err = t.db.UpdateRemind(remind, "serving_now", remind.ServingNow)

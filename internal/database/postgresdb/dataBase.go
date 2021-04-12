@@ -3,7 +3,6 @@ package postgresdb
 import (
 	"reminder-bot/internal/models"
 
-	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
@@ -44,7 +43,6 @@ func (p *DataBase) GetAllRemindesByChatID(id int64) ([]models.Remind, error) {
 	return reminds, queryResult.Error
 }
 func (p *DataBase) UpdateRemind(remind models.Remind, key string, value interface{}) error {
-	logrus.Infof("Updating remind key: %s, value: %s", key, value)
 	queryResult := p.db.Model(&remind).Update(key, value)
 	return queryResult.Error
 }
@@ -61,4 +59,12 @@ func (p *DataBase) GetUserByChatID(id int64) (models.User, error) {
 	var user models.User
 	queryResult := p.db.First(&user, "chat_id=?", id)
 	return user, queryResult.Error
+}
+func (p *DataBase) UpdateUser(user models.User) error {
+	queryResult := p.db.Model(&user).Updates(user)
+	return queryResult.Error
+}
+func (p *DataBase) UpdateUserBool(user models.User, key string, value bool) error {
+	queryResult := p.db.Model(&user).Update(key, value)
+	return queryResult.Error
 }

@@ -12,13 +12,9 @@ func GetMainKeyboard() *tgbotapi.ReplyKeyboardMarkup {
 	}
 	row2 := []tgbotapi.KeyboardButton{
 		tgbotapi.NewKeyboardButton("Посмотреть список моих напоминаний"),
+		tgbotapi.NewKeyboardButton("Настройки"),
 	}
-	row3 := []tgbotapi.KeyboardButton{
-		tgbotapi.NewKeyboardButton("1"),
-		tgbotapi.NewKeyboardButton("2"),
-		tgbotapi.NewKeyboardButton("3"),
-	}
-	keyboard := tgbotapi.NewReplyKeyboard(row1, row2, row3)
+	keyboard := tgbotapi.NewReplyKeyboard(row1, row2)
 	return &keyboard
 }
 
@@ -45,7 +41,15 @@ func GetDeleteKeyboard(id uint) *tgbotapi.InlineKeyboardMarkup {
 	return &keyboard
 }
 
-func GetStopListViewKeyboard() *tgbotapi.ReplyKeyboardMarkup {
-	keyboard := tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{tgbotapi.NewKeyboardButton("Прекратить просмотр")})
+func GetBackwardKeyboard() *tgbotapi.ReplyKeyboardMarkup {
+	keyboard := tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{tgbotapi.NewKeyboardButton("Назад")})
+	return &keyboard
+}
+func GetBackwardSaveKeyboard() *tgbotapi.ReplyKeyboardMarkup {
+	row1 := []tgbotapi.KeyboardButton{
+		tgbotapi.NewKeyboardButton("Назад"),
+		tgbotapi.NewKeyboardButton("Сохранить"),
+	}
+	keyboard := tgbotapi.NewReplyKeyboard(row1)
 	return &keyboard
 }

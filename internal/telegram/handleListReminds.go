@@ -9,9 +9,9 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
-func (t *Bot) handlerListReminds(message *tgbotapi.Message) error {
+func (t *Bot) handleListReminds(message *tgbotapi.Message) error {
 	startMsg := tgbotapi.NewMessage(t.curChatID, "Список ваших напоминаний: ")
-	startMsg.ReplyMarkup = keyboard.GetStopListViewKeyboard()
+	startMsg.ReplyMarkup = keyboard.GetBackwardKeyboard()
 	t.bot.Send(startMsg)
 
 	reminds, err := t.db.GetAllRemindesByChatID(t.curChatID)
@@ -32,7 +32,7 @@ func (t *Bot) handlerListReminds(message *tgbotapi.Message) error {
 		}
 		if update.Message != nil {
 			switch update.Message.Text {
-			case "Прекратить просмотр":
+			case "Назад":
 				endMsg := tgbotapi.NewMessage(t.curChatID, "Просмотр ваших напоминаний окончен")
 				endMsg.ReplyMarkup = keyboard.GetMainKeyboard()
 				_, err := t.bot.Send(endMsg)
@@ -54,8 +54,13 @@ func handleDeleteQuery(bot *tgbotapi.BotAPI, db database.BotDataBase, update *tg
 	if err != nil {
 		return err
 	}
-	bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID, "удалено"))
-	bot.Send(tgbotapi.NewDeleteMessage(chatID, update.CallbackQuery.Message.MessageID))
-	// logrus.Info("message Id: ", update.CallbackQuery.Message.MessageID)
+	_, err = bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID, "удалено"))
+	if err != nil {
+		return err
+	}
+	_, err = bot.Send(tgbotapi.NewDeleteMessage(chatID, update.CallbackQuery.Message.MessageID))
+	if err != nil {
+		return err
+	}
 	return nil
 }

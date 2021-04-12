@@ -23,4 +23,5 @@ type User struct {
 	Name           string
 	ChatID         int64
 	TimeZoneOffset int
+	AutoDelete     bool
 }
