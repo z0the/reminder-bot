@@ -40,15 +40,24 @@ func (t *Bot) serveRemind(remind models.Remind) {
 	%s
 	`, remind.Text)
 	t.bot.Send(msg)
-	
-	remind.ServingNow = false
-	remind.AlreadyServed = true
-	err = t.db.UpdateRemind(remind, "serving_now", remind.ServingNow)
+	user, err := t.db.GetUserByChatID(remind.ChatID)
 	if err != nil {
 		logrus.Warn(err)
 	}
-	err = t.db.UpdateRemind(remind, "already_served", remind.AlreadyServed)
-	if err != nil {
-		logrus.Warn(err)
+	if user.AutoDelete {
+		t.db.DeleteRemind(int(remind.ID))
+		return
+	} else {
+		remind.ServingNow = false
+		remind.AlreadyServed = true
+		err = t.db.UpdateRemind(remind, "serving_now", remind.ServingNow)
+		if err != nil {
+			logrus.Warn(err)
+		}
+		err = t.db.UpdateRemind(remind, "already_served", remind.AlreadyServed)
+		if err != nil {
+			logrus.Warn(err)
+		}
+		return
 	}
 }
