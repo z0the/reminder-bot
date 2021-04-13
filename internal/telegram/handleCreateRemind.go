@@ -147,7 +147,11 @@ func (t *Bot) handleCreateRemind(message *tgbotapi.Message) error {
 					_, err = t.bot.Send(msg)
 					return err
 				}
-				msg1 := tgbotapi.NewMessage(curChatID, text.RemindMessageText(remind))
+				userForText, err := t.db.GetUserByChatID(t.curChatID)
+				if err != nil {
+					return err
+				}
+				msg1 := tgbotapi.NewMessage(curChatID, text.RemindMessageText(remind, &userForText))
 				_, err = t.bot.Send(msg1)
 				if err != nil {
 					return err

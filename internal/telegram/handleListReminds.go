@@ -19,7 +19,11 @@ func (t *Bot) handleListReminds(message *tgbotapi.Message) error {
 		return err
 	}
 	for _, remind := range reminds {
-		msg := tgbotapi.NewMessage(t.curChatID, text.RemindMessageText(&remind))
+		user, err := t.db.GetUserByChatID(t.curChatID)
+		if err != nil {
+			return err
+		}
+		msg := tgbotapi.NewMessage(t.curChatID, text.RemindMessageText(&remind, &user))
 		msg.ReplyMarkup = keyboard.GetDeleteKeyboard(remind.ID)
 		t.bot.Send(msg)
 	}
